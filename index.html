@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="veiwport" content="width-device-width, initial-scale-1.0" >
+        <title>Music Player Design - Easy Tutorials</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="https://kit.fontawesome.com/c97c7f8ca2.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="music-palyer">
+                <nav>
+                    <div class="circle">
+                        <i class="fa-solid fa-angles-left"></i>
+
+                    </div>
+                    <div class="circle">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
+                </nav>
+                <img src="media/UNTOUCHABLE.jpeg" class="song-img" id="song-image" alt="">
+                <h1 id="songName">UNTOUCHABLE</h1>
+                <p>ITZY</p>
+
+                <audio id="song">
+                    <source src="media/UNTOUCHABLE - ITZY.mp3" type="audio/mpeg">
+                </audio>
+
+                <input type="range" value="0" name="" id="progess">
+                <div onclick="randomSong()">
+                    <i class="fa-solid fa-shuffle"></i>
+                </div>
+                <br>
+                <div class="control">
+                    <div onclick="pre()" class="button"><i class="fa-solid fa-backward"></i></div>
+                    <div onclick="playPause()" class="button"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                    <div onclick="next()" class="button"><i class="fa-solid fa-forward"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let progess = document.getElementById("progess");
+            let song = document.getElementById("song");
+            let songName = document.getElementById("songName");
+            let crtlIcon = document.getElementById("ctrlIcon");
+            let songImage= document.getElementById("song-image");
+            var songlist = ['media/DALLA DALLA - ITZY.mp3', 'media/ICY - ITZY.mp3', 'media/WANNABE - ITZY.mp3', 
+            'media/NOT SHY- ITZY.mp3', 'media/MAFIA In the morning - ITZY.mp3', 'media/LOCO-ITZY.mp3', 
+            'media/SNEAKER-ITZY.mp3', 'media/CHESHIRE- ITZY.mp3', 'media/CAKE - ITZY.mp3', 'media/RINGO - ITZY.mp3', 
+            'media/BORN TO BE - ITZY.mp3', 'media/UNTOUCHABLE - ITZY.mp3'];
+            var songNameList=['DALLA DALLA','ICY','WANNABE','NOT SHY','MAFIA IN THE MORNING','LOCO','SNEAKER',
+            'CHESHIRE','CAKE','RINGO','BORN TO BE','UNTOUCHABLE']
+            var songImageList=['media/DALLA DALLA.jpg','media/icy.jpeg','media/WANNABE.webp','media/NOT SHY.jpg',
+            'media/MAFIA.jpg','media/LOCO.webp','media/SNEAKER.jpg','media/CHESHIRE.jpg','media/CAKE.png',
+            'media/RINGO.jpeg','media/BORN TO BE.png','media/UNTOUCHABLE.jpeg']
+            var num=0;
+
+            song.onloadedmetadata =function (){
+                progess.max = song.duration;
+                progess.value = song.currentTime;
+            }
+
+        function playPause(){
+            if(ctrlIcon.classList.contains("fa-pause")){
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            }
+            else{
+                song.play();
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+            }
+        }
+
+        function pre(){
+            num--;
+            if (num < 0) {
+            num = songlist.length-1;
+            }
+            song.src = songlist[num];
+            song.play();
+            songName.innerHTML =songNameList[num];
+            songImage.src = songImageList[num];
+        }
+
+        function next(){
+            num++;
+            if (num >= songlist.length) {
+            num = 0;
+            }
+            song.src = songlist[num];
+            song.play();
+            songName.innerHTML =songNameList[num];
+            songImage.src = songImageList[num];
+        }
+
+        function randomSong(){
+            var pick = Math.floor(Math.random() * songlist.length);
+            song.src = songlist[pick];
+            song.play();
+            songName.innerHTML = songNameList[pick];
+            songImage.src = songImageList[pick];
+        }
+
+
+        if(song.play()){
+            setInterval(()=>{
+                progess.value = song.currentTime;
+            },500);
+        }
+
+        progess.onchange=function(){
+            song.play();
+            song.currentTime = progess.value;
+            ctrlIcon.classList.add("fa-pause");
+            ctrlIcon.classList.remove("fa-play");
+        }
+
+        song.onended = function() {
+            next(); 
+        };
+        </script>
+    </body>
+</html>
